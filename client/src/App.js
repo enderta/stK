@@ -1,13 +1,10 @@
-import { Route, Routes } from "react-router-dom";
-
-import About from "./pages/About";
-import Home from "./pages/Home";
+import React from "react";
+import Pages from "./components/studyBuddies/Pages";
 
 const App = () => (
-	<Routes>
-		<Route path="/" element={<Home />} />
-		<Route path="/about/this/site" element={<About />} />
-	</Routes>
+	<div>
+		<Pages />
+	</div>
 );
 
 export default App;

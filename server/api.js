@@ -278,5 +278,4 @@ router.delete("/availability/:id", async (req, res) => {
 		}
 	});
 });
-
 export default router;

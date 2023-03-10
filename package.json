@@ -82,6 +82,8 @@
 		"mailgun-js": "^0.22.0",
 		"morgan": "^1.10.0",
 		"pg": "^8.9.0",
+		"react-bootstrap": "^2.7.2",
+		"react-router": "^6.8.2",
 		"winston": "^3.8.2"
 	},
 	"engines": {
