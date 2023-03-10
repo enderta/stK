@@ -17,8 +17,8 @@ const App = () => {
 	const login = (e) => {
 		e.preventDefault();
 		const user = {
-			email,
-			password,
+			email:"endertanver@gmail.com",
+			password:"123456",
 		};
 		fetch("/login", {
 			method: "POST",
