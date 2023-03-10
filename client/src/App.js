@@ -20,7 +20,7 @@ const App = () => {
 			email,
 			password,
 		};
-		fetch("/login", {
+		fetch("https://starter-kit-uq32.onrender.com/api/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
