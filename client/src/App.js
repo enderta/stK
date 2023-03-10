@@ -24,7 +24,6 @@ const App = () => {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Autorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjc4NDcyNjkzLCJleHAiOjE2Nzg4MzI2OTN9.XFtFA0dVINwaZ1zjd_yoJaxI7af90yR2fmF3UI-QsQc",
 
 			},
 			body: JSON.stringify(user),
@@ -47,7 +46,10 @@ const App = () => {
 
 	return (
         <div>
-ender
+
+			{
+				<button onClick={handleBack}>Back</button>
+			}
         </div>
     );
 };
