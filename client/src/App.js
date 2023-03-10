@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 const App = () => {
-	const [email, setEmail] = React.useState("");
-	const [password, setPassword] = React.useState("");
-	const  setErr = React.useState(false);
+	const [email, setEmail] = React.useState("endertanver92@gmail.com");
+	const [password, setPassword] = React.useState("123456");
+	const  [err,setErr] = React.useState(false);
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
 	};
@@ -17,8 +17,8 @@ const App = () => {
 	const login = (e) => {
 		e.preventDefault();
 		const user = {
-			email:"endertanver@gmail.com",
-			password:"123456",
+			email,
+			password,
 		};
 		fetch("/login", {
 			method: "POST",
@@ -40,7 +40,7 @@ const App = () => {
 					setErr(true);
 				}
 			})
-			.catch((err) => console.log(err));
+	.catch((err) => console.log(err));
 	};
 	console.log(localStorage);
 
