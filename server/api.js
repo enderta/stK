@@ -94,60 +94,51 @@ throw err;
 	}
 );
 
-router.post(
-	"/login",
-	[
-		check("email", "Please include a valid email").isEmail(),
-		check("password", "Password is required").exists(),
-	],
-	async (req, res) => {
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-		res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-		res.setHeader("Access-Control-Allow-Credentials", true);
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
+router.post("/login", async (req, res) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+	const { email, password } = req.body;
+	try {
+		const result = await db.query(
+			"SELECT * FROM trainees WHERE email = $1",
+			[email]
+		);
+		if (result.rows.length === 0) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: "Invalid credentials" }] });
 		}
-		const { email, password } = req.body;
-		try {
-			let user = await db.query("SELECT * FROM trainees WHERE email = $1", [email]);
-			if (user.rows.length === 0) {
-				return res.status(400).json({ message: "Invalid Credentials" });
-			}
-			const isMatch = await bcrypt.compare(password, user.rows[0].password);
-			if (!isMatch) {
-				return res.status(400).json({ message: "Invalid Credentials" });
-			}
+		const user = result.rows[0];
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: "Invalid credentials" }] });
+		} else {
 			const payload = {
 				user: {
-					id: user.rows[0].id,
+					id: user.id,
+					name: user.name,
+					email: user.email,
 				},
 			};
-			jwt.sign(
-				payload,
-				secret,
-				{ expiresIn: 360000 },
-				(err, token) => {
-					if (err) {
-throw err;
-}
-					res.json(
-						{
-							id: user.id,
-							name: user.name,
-							email: user.email,
-							token: token,
-						}
-					);
+			jwt.sign(payload, secret, { expiresIn: 360000 }, (err, token) => {
+				if (err) {
+					throw err;
 				}
-			);
+				res.json({ token,id: user.id, name: user.name, email: user.email });
+});
+			}
 		} catch (err) {
 			console.error(err.message);
 			res.status(500).send("Server error");
-		}
 	}
-);
+});
 
 router.post("/availability", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
