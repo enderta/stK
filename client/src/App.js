@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 const App = () => {
-	const [email, setEmail] = React.useState("endertanver92@gmail.com");
-	const [password, setPassword] = React.useState("123456");
+	const [email, setEmail] = React.useState("");
+	const [password, setPassword] = React.useState("");
 	const  [err,setErr] = React.useState(false);
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
@@ -47,9 +47,35 @@ const App = () => {
 	return (
         <div>
 
-			{
-				<button onClick={login}>Back</button>
-			}
+			<div className="container">
+				<div className="row">
+					<div className="col-md-6">
+						<div className="card mb-4 shadow-sm" style={{
+							background: "darkgoldenrod",
+						}
+						}>
+							<div className="card-body">
+								<h1>Login</h1>
+								<form>
+									<div className="form-group">
+										<label htmlFor="email">Email</label>
+										<input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={handleEmail} />
+										<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+										<label htmlFor="password">Password</label>
+										<input type="password" className="form-control" id="password" placeholder="Password" onChange={handlePassword} />
+										<div className="form-group form-check">
+											<input type="checkbox" className="form-check-input" id="exampleCheck1" />
+											<label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+										</div>
+										<button type="submit" className="btn btn-primary" onClick={login}>Submit</button>
+										<button type="submit" className="btn btn-primary" onClick={handleBack}>Back</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
     );
 };
