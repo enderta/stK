@@ -10,7 +10,7 @@ const MyAvailabilityCard = (props) => {
 
 	const handleDelete = (e) => {
 		e.preventDefault();
-		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
+		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${trainees_id}`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -39,7 +39,7 @@ const MyAvailabilityCard = (props) => {
 			topic: topic,
 			trainees_id: trainees_id,
 		};
-		fetch(`https://study-buddies.onrender.com/api/availability/${props.date.id}`, {
+		fetch(`https://study-buddies.onrender.com/api/availability/${trainees_id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
