@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 
 const MyAvailabilityCard = (props) => {
 	const [edit, setEdit] = useState(false);
-	const trainees_id = useState(localStorage.getItem("id"));
+	const [trainees_id, setTraineesId] = useState(localStorage.getItem("id"));
 	const [date, setDate] = React.useState(new Date());
 	const [topic, setTopic] = React.useState("");
 
