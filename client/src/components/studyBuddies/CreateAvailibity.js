@@ -25,7 +25,7 @@ const CreateAvailibity = () => {
 			topic: topic,
 			trainees_id: id,
 		};
-		fetch("http://localhost:3000/api/availability", {
+		fetch("https://starter-kit-uq32.onrender.com/api/availability", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
