@@ -39,7 +39,7 @@ const MyAvailabilityCard = (props) => {
 			topic: topic,
 			trainees_id: trainees_id,
 		};
-		fetch(`https://study-buddies.onrender.com/availability/${props.date.id}`, {
+		fetch(`https://study-buddies.onrender.com/api/availability/${props.date.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
