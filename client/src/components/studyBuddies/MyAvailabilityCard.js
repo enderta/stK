@@ -10,16 +10,13 @@ const MyAvailabilityCard = (props) => {
 
 	const handleDelete = (e) => {
 		e.preventDefault();
-		fetch(
-			`https://starter-kit-uq32.onrender.com/api/availability/${trainees_id}`,
-			{
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: localStorage.getItem("token"),
-				},
-			}
-		)
+		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: localStorage.getItem("token"),
+			},
+		})
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.error) {
@@ -42,7 +39,7 @@ const MyAvailabilityCard = (props) => {
 			topic: topic,
 			trainees_id: trainees_id,
 		};
-		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${trainees_id}`, {
+		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -59,7 +56,7 @@ const MyAvailabilityCard = (props) => {
 					window.location.reload();
 				}
 			})
-			.catch((err) => console.log(err	));
+			.catch((err) => console.log(err));
 	};
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -69,8 +66,6 @@ const MyAvailabilityCard = (props) => {
 			setTopic(value);
 		}
 	};
-	console.log(trainees_id);
-	console.log(props.date);
 	return (
 		<div>
 			<div className={"card"}>
