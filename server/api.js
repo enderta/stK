@@ -22,10 +22,21 @@ router.use(
 	cors({
 		accessControlAllowOrigin: "*",
 		accessControlAllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
-		accessControlAllowHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+		accessControlAllowHeaders:
+			"Origin, X-Requested-With, Content-Type, Accept, Authorization",
 		accessControlAllowCredentials: true,
 	})
 );
+
+router.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	next();
+});
 
 router.post("/send", (req, res) => {
 	const { email, to, subject, text } = req.body;
@@ -49,111 +60,132 @@ router.post("/send", (req, res) => {
 		});
 });
 
+// Provide users to create an account by providing their email, password, and name.
 router.post(
 	"/register",
 	[
 		check("email", "Please include a valid email").isEmail(),
-		check("password", "Please enter a password with 6 or more characters").isLength({ min: 6 }),
-		check("name", "Please enter a name").not().isEmpty(),
+		check(
+			"password",
+			"Please enter a password with 6 or more characters"
+		).isLength({ min: 6 }),
+		check("name", "Please enter a name").isLength({ min: 1 }),
 	],
 	async (req, res) => {
 		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-		res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-		res.setHeader("Access-Control-Allow-Credentials", true);
+		res.setHeader(
+			"Access-Control-Allow-Methods",
+			"GET, POST, PUT, DELETE, OPTIONS"
+		);
+		res.setHeader(
+			"Access-Control-Allow-Headers",
+			"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+		);
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
 		const { email, password, name } = req.body;
 		try {
-			let user = await db.query("SELECT * FROM trainees WHERE email = $1", [email]);
-			if (user.rows.length > 0) {
-				return res.status(400).json({ message: "User already exists" });
-			}
 			const salt = await bcrypt.genSalt(10);
-			user = await db.query(
-				"INSERT INTO trainees (email, password, name) VALUES ($1, $2, $3) RETURNING *",
-				[email, await bcrypt.hash(password, salt), name]
+			const hashedPassword = await bcrypt.hash(password, salt);
+			const result = await db.query(
+				"SELECT * FROM trainees WHERE email = $1",
+				[email]
 			);
-			const payload = {
-				user: {
-					id: user.rows[0].id,
-				},
-			};
-			jwt.sign(payload, secret, { expiresIn: 360000 }, (err, token) => {
-				if (err) {
-throw err;
-}
-				res.json({ token });
-			});
+			if (result.rows.length > 0) {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: "User already exists" }] });
+			}
+			const query =
+				"INSERT INTO trainees (email, password, name) VALUES ($1, $2, $3)";
+			const values = [email, hashedPassword, name];
+			await db.query(query, values);
+			res.status(201).json({ msg: "User created" });
 		} catch (err) {
-			console.error(err.message);
-			res.status(500).send("Server error");
+			//eslint-disable-next-line
+			console.error(err);
+			res.status(500).json({ errors: [{ msg: "Server error" }] });
 		}
 	}
 );
-
+// Provide allows registered users to log in by providing their email and password.
+// If the credentials are valid, the server returns a JWT that can be used to authenticate subsequent requests.
 router.post("/login", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });
 	}
 	const { email, password } = req.body;
 	try {
-		const result = await db.query(
-			"SELECT * FROM trainees WHERE email = $1",
-			[email]
-		);
+		const result = await db.query("SELECT * FROM trainees WHERE email = $1", [
+			email,
+		]);
 		if (result.rows.length === 0) {
-			return res
-				.status(400)
-				.json({ errors: [{ msg: "Invalid credentials" }] });
+			return res.status(400).json({ errors: [{ msg: "Invalid credentials" }] });
 		}
 		const user = result.rows[0];
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
-			return res
-				.status(400)
-				.json({ errors: [{ msg: "Invalid credentials" }] });
+			return res.status(400).json({ errors: [{ msg: "Invalid credentials" }] });
 		} else {
 			const payload = {
 				user: {
 					id: user.id,
-					name: user.name,
-					email: user.email,
 				},
 			};
 			jwt.sign(payload, secret, { expiresIn: 360000 }, (err, token) => {
 				if (err) {
 					throw err;
 				}
-				res.json({ token,id: user.id, name: user.name, email: user.email });
-});
-			}
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send("Server error");
+				res.json({
+					id: user.id,
+					name: user.name,
+					email: user.email,
+					token: token,
+				});
+			});
+		}
+	} catch (err) {
+		//eslint-disable-next-line
+		console.error(err);
+		res.status(500).json({ errors: [{ msg: "Server error" }] });
 	}
 });
 
 router.post("/availability", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
 
 	// Delete old data before inserting new data
-	const deleteQuery = "DELETE FROM availability WHERE availability_date < CURRENT_DATE";
+	const deleteQuery =
+		"DELETE FROM availability WHERE availability_date < CURRENT_DATE";
 	await db.query(deleteQuery);
+
 	jwt.verify(req.headers.authorization, secret, async (error, decoded) => {
 		if (error) {
 			res.status(401).json({ message: "Unauthorized" });
 		} else {
 			const { availability_date, topic, trainees_id } = req.body;
-			const query = "INSERT INTO availability (availability_date, topic, trainees_id) VALUES ($1, $2, $3) RETURNING id";
+			const query =
+				"INSERT INTO availability (availability_date, topic, trainees_id) VALUES ($1, $2, $3) RETURNING id";
 			const values = [availability_date, topic, trainees_id];
 			const result = await db.query(query, values);
 			const id = result.rows[0].id;
@@ -167,12 +199,19 @@ router.post("/availability", async (req, res) => {
 		}
 	});
 });
-
+// Returns a list of all availability records in the database.
 router.get("/availabilities", (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	const deleteQuery = "DELETE FROM availability WHERE availability_date < CURRENT_DATE";
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	const deleteQuery =
+		"DELETE FROM availability WHERE availability_date < CURRENT_DATE";
 	db.query(deleteQuery);
 	jwt.verify(req.headers.authorization, secret, async (error, decoded) => {
 		if (error) {
@@ -180,7 +219,8 @@ router.get("/availabilities", (req, res) => {
 		} else {
 			const queryOptions = {
 				daily: "WHERE availability_date = CURRENT_DATE",
-				weekly: "WHERE availability_date BETWEEN CURRENT_DATE AND CURRENT_DATE + interval '7' day",
+				weekly:
+					"WHERE availability_date BETWEEN CURRENT_DATE AND CURRENT_DATE + interval '7' day",
 				monthly: `WHERE (date_trunc('month', availability_date) = date_trunc('month', CURRENT_DATE)
               OR date_trunc('month', availability_date) = date_trunc('month', CURRENT_DATE + interval '1' month)) AND availability_date >= CURRENT_DATE`,
 				name: `WHERE t.name = '${req.query.name}'`,
@@ -200,73 +240,102 @@ router.get("/availabilities", (req, res) => {
 		}
 	});
 });
-
+// Provide authenticated users to update or delete an availability record by providing the availability ID, availability date, topic, and trainee ID.
 router.get("/availability/:id", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	const deleteQuery = "DELETE FROM availability WHERE availability_date < CURRENT_DATE";
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	const deleteQuery =
+		"DELETE FROM availability WHERE availability_date < CURRENT_DATE";
 	await db.query(deleteQuery);
 	jwt.verify(req.headers.authorization, secret, (error, decoded) => {
 		if (error) {
 			res.status(401).json({ message: "Unauthorized" });
 		} else {
 			const id = parseInt(req.params.id);
-			db.query("SELECT * FROM availability WHERE trainees_id = $1", [id], (error, results) => {
-				if (error) {
-					throw error;
+			db.query(
+				"SELECT * FROM availability WHERE trainees_id = $1",
+				[id],
+				(error, results) => {
+					if (error) {
+						throw error;
+					}
+					res.status(200).json(results.rows);
 				}
-				res.status(200).json(results.rows);
-			});
+			);
 		}
 	});
 });
 
 router.put("/availability/:id", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	const deleteQuery = "DELETE FROM availability WHERE availability_date < CURRENT_DATE";
-	await db.query(deleteQuery);
-	jwt.verify(req.headers.authorization, secret, (error, decoded) => {
-			if (error) {
-				res.status(401).json({ message: "Unauthorized" });
-			} else {
-				const id = parseInt(req.params.id);
-				const { availability_date, topic, trainees_id } = req.body;
-				db.query(
-					"UPDATE availability SET availability_date = $1, topic = $2, trainees_id = $3 WHERE id = $4",
-					[availability_date, topic, trainees_id, id],
-					(error, results) => {
-						if (error) {
-							throw error;
-						}
-						res.status(200).json({ message: "Availability updated" });
-					}
-				);
-			}
-		}
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
 	);
-});
-
-router.delete("/availability/:id", async (req, res) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	const deleteQuery = "DELETE FROM availability WHERE availability_date < CURRENT_DATE";
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	const deleteQuery =
+		"DELETE FROM availability WHERE availability_date < CURRENT_DATE";
 	await db.query(deleteQuery);
 	jwt.verify(req.headers.authorization, secret, (error, decoded) => {
 		if (error) {
 			res.status(401).json({ message: "Unauthorized" });
 		} else {
 			const id = parseInt(req.params.id);
-			db.query("DELETE FROM availability WHERE id = $1", [id], (error, results) => {
-				if (error) {
-					throw error;
+			const { availability_date, topic, trainees_id } = req.body;
+			db.query(
+				"UPDATE availability SET availability_date = $1, topic = $2, trainees_id = $3 WHERE id = $4",
+				[availability_date, topic, trainees_id, id],
+				(error, results) => {
+					if (error) {
+						throw error;
+					}
+					res.status(200).json({ message: "Availability updated" });
 				}
-				res.status(200).json({ message: "Availability deleted" });
-			});
+			);
 		}
 	});
 });
+
+router.delete("/availability/:id", async (req, res) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	const deleteQuery =
+		"DELETE FROM availability WHERE availability_date < CURRENT_DATE";
+	await db.query(deleteQuery);
+	jwt.verify(req.headers.authorization, secret, (error, decoded) => {
+		if (error) {
+			res.status(401).json({ message: "Unauthorized" });
+		} else {
+			const id = parseInt(req.params.id);
+			db.query(
+				"DELETE FROM availability WHERE id = $1",
+				[id],
+				(error, results) => {
+					if (error) {
+						throw error;
+					}
+					res.status(200).json({ message: "Availability deleted" });
+				}
+			);
+		}
+	});
+});
+
 export default router;

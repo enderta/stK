@@ -59,7 +59,7 @@ const MyAvailabilityCard = (props) => {
 					window.location.reload();
 				}
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err	));
 	};
 	const handleChange = (event) => {
 		const { name, value } = event.target;
