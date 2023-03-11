@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 const Login = () => {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
-	const setErr = React.useState(false);
+	const [err,setErr] = React.useState(false);
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
 	};
@@ -22,7 +22,7 @@ const Login = () => {
 			email,
 			password,
 		};
-		fetch("http://localhost:3000/api/login", {
+		fetch("https://starter-kit-uq32.onrender.com/api/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

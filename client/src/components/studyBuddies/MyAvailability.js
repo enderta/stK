@@ -7,7 +7,7 @@ const MyAvailability = () => {
 	const [myDates, setMyDates] = useState([]);
 	useEffect(() => {
 		fetch(
-			`http://localhost:3000/api/availability/${localStorage.getItem(
+			`https://starter-kit-uq32.onrender.com/api/availability/${localStorage.getItem(
 				"id"
 			)}`,
 			{

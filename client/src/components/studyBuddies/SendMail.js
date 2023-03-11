@@ -17,7 +17,7 @@ const SendMail = (props) => {
 		if (email === "" || to === "" || subject === "" || message === "") {
 			alert("Please fill all fields");
 		} else {
-			const response = await fetch("http://localhost:5000/send", {
+			const response = await fetch("https://starter-kit-uq32.onrender.com/api/send", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

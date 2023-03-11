@@ -10,7 +10,7 @@ const MyAvailabilityCard = (props) => {
 
 	const handleDelete = (e) => {
 		e.preventDefault();
-		fetch(`http://localhost:3000/api/availability/${props.date.id}`, {
+		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",

@@ -10,7 +10,7 @@ const AllUsers = () => {
 	const [selected, setSelected] = useState("monthly");
 
 	useEffect(() => {
-		fetch(`http://localhost:3000/api/availabilities?search=${search}&filter=${filter}`,
+		fetch(`https://starter-kit-uq32.onrender.com/api/availabilities?search=${search}&filter=${filter}`,
 			{
 				method: "GET",
 				headers: {
@@ -113,8 +113,7 @@ const AllUsers = () => {
 											margin: "2px",
 											padding: "2px",
 										}}>
-											<AvailibityTable key={owner.id} owner={owner} owners={owners}
-															 setOwners={setOwners} />
+											<AvailibityTable key={owner.id} owner={owner} owners={owners} setOwners={setOwners} />
 										</div>
 									</div>
 								);
