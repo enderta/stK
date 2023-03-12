@@ -22,7 +22,7 @@ const Login = () => {
 			email,
 			password,
 		};
-		fetch("https://starter-kit-uq32.onrender.com/api/login", {
+		fetch("https://study-buddies.onrender.com/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
