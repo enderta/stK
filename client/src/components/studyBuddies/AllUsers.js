@@ -34,7 +34,6 @@ const AllUsers = () => {
 		setSearch(value);
 		console.log("Search input value:", value);
 	};
-
 	const handleFilter = (event) => {
 		event.preventDefault();
 		if (event.target.innerText === "Daily") {
