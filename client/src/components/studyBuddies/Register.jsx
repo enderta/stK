@@ -23,7 +23,7 @@ const Register = () => {
 			email,
 			password,
 		};
-		fetch("https://starter-kit-uq32.onrender.com/api/register", {
+		fetch("https://study-buddies.onrender.com/register", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

@@ -3,9 +3,7 @@ import React from "react";
 const ResultPage = (props) => {
 	return (
 		<div>
-			<h1 style={{ color: "yellow", textAlign: "center" }}>
-				List of Trainees
-			</h1>
+			<h1 style={{ color: "yellow", textAlign: "center" }}>List of Trainees</h1>
 			<div className="container">
 				<div className="row">
 					<div className="col-md-6">
@@ -18,14 +16,12 @@ const ResultPage = (props) => {
 						/>
 					</div>
 					<div className="col-md-6">
-						<div
-							className="btn-group"
-							role="group"
-							aria-label="Basic example"
-						>
+						<div className="btn-group" role="group" aria-label="Basic example">
 							<button
 								type="button"
-								className={`btn btn-${props.selected === "daily" ? "info" : "outline-info"}`}
+								className={`btn btn-${
+									props.selected === "daily" ? "info" : "outline-info"
+								}`}
 								value="daily"
 								onClick={props.handleFilter}
 							>
@@ -33,7 +29,9 @@ const ResultPage = (props) => {
 							</button>
 							<button
 								type="button"
-								className={`btn btn-${props.selected  === "weekly" ? "info" : "outline-info"}`}
+								className={`btn btn-${
+									props.selected === "weekly" ? "info" : "outline-info"
+								}`}
 								value="weekly"
 								onClick={props.handleFilter}
 							>
@@ -41,7 +39,9 @@ const ResultPage = (props) => {
 							</button>
 							<button
 								type="button"
-								className={`btn btn-${props.selected   === "monthly" ? "info" : "outline-info"}`}
+								className={`btn btn-${
+									props.selected === "monthly" ? "info" : "outline-info"
+								}`}
 								value="monthly"
 								onClick={props.handleFilter}
 							>
@@ -55,7 +55,6 @@ const ResultPage = (props) => {
 				There is no available trainee for this date.
 				<p>Please check weekly and monthly availability.</p>
 			</h1>
-
 		</div>
 	);
 };

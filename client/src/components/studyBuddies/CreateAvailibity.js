@@ -50,48 +50,55 @@ const CreateAvailibity = () => {
 
 	return (
 		<div>
-		<div className="container">
-			<div className="row">
-				<div className="col-md-6">
-					<div className="card">
-						<div className="card-body">
-							<h5 className="card-title">Create Availability</h5>
-							<div className="container">
-								<div className="row">
-									<div className="col-md-6 mt-5 mx-auto">
-										<Form style={{ width: "50%", margin: "auto" }}>
-											<Form.Group controlId="formBasicDate">
-												<Form.Label style={{ color: "goldenrod" }}>Date</Form.Label>
-												<Form.Control
-													type="date"
-													min={new Date().toISOString().split("T")[0]}
-													max={
-														new Date(new Date().setMonth(new Date().getMonth() + 1))
-															.toISOString()
-															.split("T")[0]
-													}
-													name="date"
-													onChange={handleChange}
-												/>
-											</Form.Group>
-											<Form.Group controlId="formBasicTopic">
-												<Form.Label style={{ color: "goldenrod" }}>Topic</Form.Label>
-												<Form.Control
-													type="text"
-													placeholder="Topic"
-													name="topic"
-													onChange={handleChange}
-												/>
-											</Form.Group>
-											<Button
-												onClick={handleSubmit}
-												className="btn btn-outline-info"
-												style={{ float: "right", margin: "10px" }}
-											>
-												Create
-											</Button>
-											{/*   <Button onClick={handleBack} className="btn btn-outline-info" style={{float: "right", margin: "10px"}}>Back</Button>*/}
-										</Form>
+			<div className="container">
+				<div className="row">
+					<div className="col-md-6">
+						<div className="card">
+							<div className="card-body">
+								<h5 className="card-title">Create Availability</h5>
+								<div className="container">
+									<div className="row">
+										<div className="col-md-6 mt-5 mx-auto">
+											<Form style={{ width: "50%", margin: "auto" }}>
+												<Form.Group controlId="formBasicDate">
+													<Form.Label style={{ color: "goldenrod" }}>
+														Date
+													</Form.Label>
+													<Form.Control
+														type="date"
+														min={new Date().toISOString().split("T")[0]}
+														max={
+															new Date(
+																new Date().setMonth(new Date().getMonth() + 1)
+															)
+																.toISOString()
+																.split("T")[0]
+														}
+														name="date"
+														onChange={handleChange}
+													/>
+												</Form.Group>
+												<Form.Group controlId="formBasicTopic">
+													<Form.Label style={{ color: "goldenrod" }}>
+														Topic
+													</Form.Label>
+													<Form.Control
+														type="text"
+														placeholder="Topic"
+														name="topic"
+														onChange={handleChange}
+													/>
+												</Form.Group>
+												<Button
+													onClick={handleSubmit}
+													className="btn btn-outline-info"
+													style={{ float: "right", margin: "10px" }}
+												>
+													Create
+												</Button>
+												{/*   <Button onClick={handleBack} className="btn btn-outline-info" style={{float: "right", margin: "10px"}}>Back</Button>*/}
+											</Form>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -100,7 +107,6 @@ const CreateAvailibity = () => {
 				</div>
 			</div>
 		</div>
-</div>
 	);
 };
 

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 const Login = () => {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
-	const [err,setErr] = React.useState(false);
+	const setErr = React.useState(false);
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
 	};
@@ -14,7 +14,7 @@ const Login = () => {
 	};
 	const handleBack = (e) => {
 		e.preventDefault();
-		window.location.href = "/all";
+		window.location.href = "/";
 	};
 	const login = (e) => {
 		e.preventDefault();
@@ -35,8 +35,7 @@ const Login = () => {
 					localStorage.setItem("token", data.token);
 					localStorage.setItem("email", email);
 					localStorage.setItem("id", data.id);
-					localStorage.setItem("name", data.name);
-					window.location.href = "/home";
+					window.location.href = "/availability";
 				} else {
 					alert("Wrong email or password");
 					setErr(true);

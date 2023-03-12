@@ -20,7 +20,7 @@ const NavBar = () => {
 						<Nav className="me-auto">
 							<Nav.Link href="/all">All Users</Nav.Link>
 							<Nav.Link href="/myavailability">My Availabilities</Nav.Link>
-						{/*	<Nav.Link href="/availability">Create Availability</Nav.Link>*/}
+							<Nav.Link href="/availability">Create Availability</Nav.Link>
 						</Nav>
 						<Nav className="ml-auto">
 							<UserInfoMenu />

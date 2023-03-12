@@ -1,16 +1,17 @@
 import React, { useState } from "react";
+import NavBar from "./NavBar";
 import { Form, Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 const MyAvailabilityCard = (props) => {
 	const [edit, setEdit] = useState(false);
-	const [trainees_id, setTraineesId] = useState(localStorage.getItem("id"));
+	const [trainees_id, setTrainees_id] = useState(localStorage.getItem("id"));
 	const [date, setDate] = React.useState(new Date());
 	const [topic, setTopic] = React.useState("");
 
 	const handleDelete = (e) => {
 		e.preventDefault();
-		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
+		fetch(`https://study-buddies.onrender.com/availability/${props.date.id}`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -39,7 +40,7 @@ const MyAvailabilityCard = (props) => {
 			topic: topic,
 			trainees_id: trainees_id,
 		};
-		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
+		fetch(`https://study-buddies.onrender.com/availability/${props.date.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",

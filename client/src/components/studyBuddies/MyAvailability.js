@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import MyAvailabilityCard from "./MyAvailabilityCard";
-import CreateAvailibity from "./CreateAvailibity";
 
 const MyAvailability = () => {
 	const [myDates, setMyDates] = useState([]);
 	useEffect(() => {
 		fetch(
-			`https://starter-kit-uq32.onrender.com/api/availability/${localStorage.getItem(
+			`https://study-buddies.onrender.com/availability/${localStorage.getItem(
 				"id"
 			)}`,
 			{
@@ -33,7 +32,6 @@ const MyAvailability = () => {
 			<h1>My Availability</h1>
 			<div>
 				<div>
-					<CreateAvailibity />
 					<div className="container">
 						<div className="row">
 							{myDates.map((date) => {
