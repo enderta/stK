@@ -1,9 +1,10 @@
 import React from "react";
-/*import vid from "./pexels-c-technical-6334253.mp4";*/
+import vid from "./pexels-c-technical-6334253.mp4";
 import "./home.css";
 import HeadingHome from "./HeadingHome";
 import Subheading from "./Subheading";
-import Footer from "../footer/Footer";
+import Footer from "./Footer/Footer";
+
 function LandingPage() {
 
 	function handleRegisterBtn() {
@@ -34,9 +35,9 @@ function LandingPage() {
 						Register
 					</button>
 				</div>
-			{/*	<video className="video" autoPlay loop muted>
-					<source src="https" type="video/mp4" />
-				</video>*/}
+				<video className="video" autoPlay loop muted>
+					<source src={vid} type="video/mp4" />
+				</video>
 				<div className="overlay"></div>
 				<Footer />
 			</div>

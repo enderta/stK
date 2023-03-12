@@ -3,7 +3,7 @@ import React from "react";
 const Logout = () => {
 	const handleLogout = () => {
 		localStorage.removeItem("token");
-		window.location.href = "/";
+		window.location.href = "http://localhost:3000";
 	};
 
 	return (
