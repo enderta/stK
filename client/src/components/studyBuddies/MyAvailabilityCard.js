@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavBar from "./NavBar";
 import { Form, Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
@@ -11,7 +10,7 @@ const MyAvailabilityCard = (props) => {
 
 	const handleDelete = (e) => {
 		e.preventDefault();
-		fetch(`https://study-buddies.onrender.com/availability/${props.date.id}`, {
+		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -40,7 +39,7 @@ const MyAvailabilityCard = (props) => {
 			topic: topic,
 			trainees_id: trainees_id,
 		};
-		fetch(`https://study-buddies.onrender.com/availability/${props.date.id}`, {
+		fetch(`https://starter-kit-uq32.onrender.com/api/availability/${props.date.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",

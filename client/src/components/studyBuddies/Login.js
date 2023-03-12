@@ -22,7 +22,7 @@ const Login = () => {
 			email,
 			password,
 		};
-		fetch("https://study-buddies.onrender.com/login", {
+		fetch("https://starter-kit-uq32.onrender.com/api/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -35,7 +35,7 @@ const Login = () => {
 					localStorage.setItem("token", data.token);
 					localStorage.setItem("email", email);
 					localStorage.setItem("id", data.id);
-					window.location.href = "/availability";
+					window.location.href = "/all";
 				} else {
 					alert("Wrong email or password");
 					setErr(true);
