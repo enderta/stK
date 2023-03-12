@@ -1,0 +1,64 @@
+/* style={{ width: "50%", margin: "auto" }} */
+body {
+    --background-color: #e3ebee;
+    background-color: var(--background-color);
+}
+
+* {
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,800;1,500&display=swap");
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    margin-top: 3em;
+}
+
+Form {
+    display: flex;
+    flex-direction: column;
+}
+.input-field {
+    padding: 1em 0;
+}
+.input {
+    border: 2px solid #264960;
+    border-radius: 0;
+    font-family: "Poppins", sans-serif;
+}
+.btn button {
+    font-size: 1em;
+    padding: 5px 70px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 20px;
+    letter-spacing: 2px;
+    transition: 0.2s;
+}
+.btn button:hover {
+    letter-spacing: 7px;
+}
+.cancel-btn {
+    background-color: #fff;
+    font-weight: 800;
+    font-family: "Poppins", sans-serif;
+}
+
+.signUp-btn {
+    background-color: #111;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+}
+.password-container{
+    position: relative;
+}
+.fa-eye{
+    position: absolute;
+    top: 40%;
+    right: 6%;
+}

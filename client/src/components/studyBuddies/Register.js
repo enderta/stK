@@ -1,11 +1,21 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import InputGroup from "react-bootstrap/InputGroup";
+import Footer from "../footer/Footer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+
+import "./register.css";
+
+const eye = <FontAwesomeIcon icon={faEye} />;
 
 const Register = () => {
+	const [validated, setValidated] = React.useState(false);
 	const [name, setFirstName] = React.useState("");
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
+	const [errorMessage, setErrorMessage] = React.useState("");
+	const [passwordShown, setPasswordShown] = React.useState(false);
 	const handleChange = (e) => {
 		if (e.target.name === "firstName") {
 			setFirstName(e.target.value);
@@ -16,14 +26,27 @@ const Register = () => {
 		}
 	};
 
-	const register = (e) => {
+	// to be fixed
+	const togglePasswordVisiblity = () => {
+		setPasswordShown(passwordShown ? false : true);
+	};
+
+	const handleSubmit = (e) => {
+		const form = e.currentTarget;
+		if (form.checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+
 		e.preventDefault();
 		const user = {
 			name,
 			email,
 			password,
 		};
-		fetch("https://starter-kit-uq32.onrender.com/api/register", {
+
+		fetch("https://study-buddies.onrender.com/register", {
+			// this API comes from render.com
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -33,19 +56,23 @@ const Register = () => {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.msg === "User created") {
-					alert("User created");
+					setErrorMessage("User created");
 					window.location.href = "/login";
 				} else if (data.errors[0].msg === "User already exists") {
-					alert("User already exists");
+					setErrorMessage("User already exists");
 				} else if (!email.includes("@")) {
-					alert("Please enter a valid email");
+					setErrorMessage("Please enter a valid email");
+				} else if (password.length < 6) {
+					setErrorMessage(
+						"Please enter a password that is at least 6 characters"
+					);
 				} else {
-					alert("Fill in all fields");
+					setErrorMessage("Fill in all fields");
 				}
 			})
 			.catch((err) => console.log(err));
+		setValidated(true);
 	};
-
 	const handleBack = (e) => {
 		e.preventDefault();
 		window.location.href = "/";
@@ -54,57 +81,92 @@ const Register = () => {
 	return (
 		<div>
 			<div className="container">
+				<h1>Register</h1>
 				<div className="row">
 					<div className="col-md-6 mt-5 mx-auto">
-						<Form style={{ width: "50%", margin: "auto" }}>
-							<Form.Group controlId="formBasicEmail">
-								<Form.Label style={{ color: "goldenrod" }}>
-									First Name
-								</Form.Label>
+						<Form
+							noValidate
+							validated={validated}
+							onSubmit={handleChange}
+							style={{ width: "50%", margin: "auto" }}
+						>
+							<h4 className="mb-2 text-danger font-italic">{errorMessage}</h4>
+							<Form.Group className="input-field" controlId="formBasicEmail">
 								<Form.Control
+									className="input"
+									required
 									type="text"
-									placeholder="Enter First Name"
-									name="firstName"
+									placeholder="First name"
 									onChange={handleChange}
+									name="firstName"
 								/>
+								<Form.Control.Feedback>Looks good!</Form.Control.Feedback>
 							</Form.Group>
-							<Form.Group controlId="formBasicEmail">
-								<Form.Label style={{ color: "goldenrod" }}>
-									Email address
+
+							<Form.Group className="input-field" controlId="formBasicEmail">
+								<InputGroup hasValidation>
+									<Form.Control
+										className="input"
+										required
+										type="email"
+										placeholder="Enter email..."
+										name="email"
+										onChange={handleChange}
+									/>
+									<Form.Control.Feedback type="invalid">
+										Please enter a valid email.
+									</Form.Control.Feedback>
+								</InputGroup>
+							</Form.Group>
+							<Form.Group
+								className="input-field password-container"
+								controlId="fvalidationCustom05"
+							>
+								{/* TODO: The label eye needs styling */}
+								<Form.Label>
+									<i onClick={togglePasswordVisiblity}>{eye}</i>
 								</Form.Label>
 								<Form.Control
-									type="email"
-									placeholder="Enter email"
-									name="email"
+									className="input"
+									type={passwordShown ? "text" : "password"}
+									placeholder="password"
 									onChange={handleChange}
-								/>
-							</Form.Group>
-							<Form.Group controlId="formBasicPassword">
-								<Form.Label style={{ color: "goldenrod" }}>Password</Form.Label>
-								<Form.Control
-									type="password"
-									placeholder="Password"
 									name="password"
-									onChange={handleChange}
+									minLength={6}
+									required
+								/>
+								<Form.Control.Feedback type="invalid">
+									Please provide a valid password.
+								</Form.Control.Feedback>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Check
+									required
+									label="Agree to terms and conditions"
+									feedback="You must agree before submitting."
+									feedbackType="invalid"
 								/>
 							</Form.Group>
-							<Button
-								variant="outline-success"
-								style={{ margin: "10px" }}
-								type="submit"
-								onClick={register}
-							>
-								Register
-							</Button>
-							<Button
-								variant="outline-success"
-								style={{ margin: "10px" }}
-								type="submit"
-								onClick={handleBack}
-							>
-								Back
-							</Button>
+							<div className="btn">
+								<button
+									className="cancel-btn"
+									variant="outline-success"
+									type="submit"
+									onClick={handleBack}
+								>
+									Cancel
+								</button>
+								<button
+									className="signUp-btn"
+									variant="outline-success"
+									type="submit"
+									onClick={handleSubmit}
+								>
+									Sign up
+								</button>
+							</div>
 						</Form>
+						<Footer />
 					</div>
 				</div>
 			</div>

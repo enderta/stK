@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,800;1,500&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    --white: #fff;
+    --navyBlue: #15485F;
+    --black: #111;
+    --lightGray: #393053;
+    --lineGradientShadow: 180deg, #1F1E1E 0%, rgba(31, 30, 30, 0) 100%;
+}
+
+.showcase {
+    position: relative;
+    right: 0;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--lightGray);
+    color: var(--white);
+    z-index: 2;
+}
+
+.showcase video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.text {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.btn-wrapper {
+    z-index: 10;
+}
+
+.btn-wrapper button {
+    font-size: 1em;
+    padding: 10px 50px;
+    border-radius: 6px;
+    border-color: transparent;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 10px;
+    letter-spacing: 2px;
+    transition: 0.2s;
+}
+
+.btn-wrapper button:hover {
+    letter-spacing: 7px;
+}
+
+.login {
+    background-color: var(--navyBlue);
+    color: var(--white);
+}
+
+.register {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 459px;
+    background: linear-gradient(var(--lineGradientShadow));
+}
+
+.text h4 {
+    font-size: 2em;
+    font-weight: 600;
+    line-height: 1em;
+}
+.text p {
+    font-size: 1em;
+    max-width: 600px;
+    text-align: center;
+    color: var(--black);
+    margin-top: 16em;
+    font-weight: 700;
+}
