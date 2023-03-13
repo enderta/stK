@@ -35,7 +35,7 @@ const Login = () => {
 					localStorage.setItem("token", data.token);
 					localStorage.setItem("email", email);
 					localStorage.setItem("id", data.id);
-					window.location.href = "/all";
+					window.location.href = "/home";
 				} else {
 					alert("Wrong email or password");
 					setErr(true);

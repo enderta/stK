@@ -7,13 +7,17 @@ const secret = "mysecret";
 const mg = require("mailgun-js");
 import logger from "./utils/logger";
 import db from "./db";
+import * as process from "process";
 
 const router = Router();
 const mailgun = () =>
 	mg({
-		apiKey: "78a5653ce69388407c6a2edcd2a85368-d1a07e51-f900629e",
-		domain: "sandboxd2c73936264e4683bc115f81fd6d19dd.mailgun.org",
+		apiKey: process.env.MAILGUN_API_KEY,
+		domain: process.env.MAILGUN_DOMAIN,
 	});
+
+
+
 router.get("/", (_, res) => {
 	logger.debug("Welcoming everyone...");
 	res.json({ message: "Hello, world!" });
@@ -39,6 +43,7 @@ router.use((req, res, next) => {
 });
 
 router.post("/send", (req, res) => {
+	console.log(process.env.MAILGUN_API_KEY);
 	const { email, to, subject, text } = req.body;
 	const data = {
 		from: email,
@@ -58,6 +63,7 @@ router.post("/send", (req, res) => {
 			}
 			return res.status(200).json(body);
 		});
+
 });
 
 // Provide users to create an account by providing their email, password, and name.
