@@ -1,6 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import NavBar from "./NavBar";
 
 const Register = () => {
 	const [name, setFirstName] = React.useState("");
@@ -53,6 +54,9 @@ const Register = () => {
 
 	return (
 		<div>
+			<div>
+				<NavBar	/>
+			</div>
 			<div className="container">
 				<div className="row">
 					<div className="col-md-6 mt-5 mx-auto">

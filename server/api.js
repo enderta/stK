@@ -16,8 +16,6 @@ const mailgun = () =>
 		domain: process.env.MAILGUN_DOMAIN,
 	});
 
-
-
 router.get("/", (_, res) => {
 	logger.debug("Welcoming everyone...");
 	res.json({ message: "Hello, world!" });
@@ -43,7 +41,6 @@ router.use((req, res, next) => {
 });
 
 router.post("/send", (req, res) => {
-	console.log(process.env.MAILGUN_API_KEY);
 	const { email, to, subject, text } = req.body;
 	const data = {
 		from: email,
@@ -63,7 +60,6 @@ router.post("/send", (req, res) => {
 			}
 			return res.status(200).json(body);
 		});
-
 });
 
 // Provide users to create an account by providing their email, password, and name.
@@ -95,10 +91,9 @@ router.post(
 		try {
 			const salt = await bcrypt.genSalt(10);
 			const hashedPassword = await bcrypt.hash(password, salt);
-			const result = await db.query(
-				"SELECT * FROM trainees WHERE email = $1",
-				[email]
-			);
+			const result = await db.query("SELECT * FROM trainees WHERE email = $1", [
+				email,
+			]);
 			if (result.rows.length > 0) {
 				return res
 					.status(400)

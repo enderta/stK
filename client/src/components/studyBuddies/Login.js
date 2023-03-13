@@ -1,6 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import NavBar from "./NavBar";
 
 const Login = () => {
 	const [email, setEmail] = React.useState("");
@@ -35,6 +36,7 @@ const Login = () => {
 					localStorage.setItem("token", data.token);
 					localStorage.setItem("email", email);
 					localStorage.setItem("id", data.id);
+					localStorage.setItem("name", data.name);
 					window.location.href = "/home";
 				} else {
 					alert("Wrong email or password");
@@ -47,6 +49,9 @@ const Login = () => {
 
 	return (
 		<div>
+			<div>
+				<NavBar	/>
+			</div>
 			<div className="container">
 				<div className="row">
 					<div className="col-md-6 mt-5 mx-auto">

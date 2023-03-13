@@ -3,18 +3,14 @@ import React from "react";
 const Logout = () => {
 	const handleLogout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("name");
+		localStorage.removeItem("email");
 		window.location.href = "/";
 	};
 
 	return (
 		<div>
-			<button
-				onClick={handleLogout}
-				className="btn btn-outline-info"
-				style={{ float: "right", margin: "10px" }}
-			>
-				Logout
-			</button>
+			<button onClick={handleLogout}>Logout</button>
 		</div>
 	);
 };
