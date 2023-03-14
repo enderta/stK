@@ -11,30 +11,21 @@ const UserInfoMenu = () => {
 	};
 
 	return (
-		<div>
-			{
-				localStorage.getItem("token") ? (
-					<Dropdown>
-						<Dropdown.Toggle variant="outline-success" id="user-info-dropdown">
+		<div >
+
+					<Dropdown >
+						<Dropdown.Toggle variant="outline-success" id="user-info-dropdown" style={{ borderRadius:"50px" }}>
 							{user.name.charAt(0).toLocaleUpperCase()}
 						</Dropdown.Toggle>
 
-						<Dropdown.Menu>
+						<Dropdown.Menu >
 							<Dropdown.Item href="/profile">Profile</Dropdown.Item>
 							<Dropdown.Item >
 								<Logout />
 							</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
-				) : (
-					<Dropdown>
-						<Dropdown.Toggle variant="outline-success" id="user-info-dropdown">
-							<DropdownItem href="/login">Login</DropdownItem>
-							<DropdownItem href="/register">Register</DropdownItem>
-						</Dropdown.Toggle>
-					</Dropdown>
-				)
-			}
+
 		</div>
 	);
 };
