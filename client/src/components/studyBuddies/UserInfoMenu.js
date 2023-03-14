@@ -18,7 +18,7 @@ const UserInfoMenu = () => {
 							{user.name.charAt(0).toLocaleUpperCase()}
 						</Dropdown.Toggle>
 
-						<Dropdown.Menu >
+						<Dropdown.Menu variant="dark" >
 							<Dropdown.Item href="/profile">Profile</Dropdown.Item>
 							<Dropdown.Item >
 								<Logout />

@@ -3,7 +3,7 @@ import Pages from "./components/studyBuddies/Pages";
 
 const App = () => {
     return (
-        <div>
+        <div >
 			<Pages />
         </div>
     );

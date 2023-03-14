@@ -6,7 +6,7 @@ const LandingPage = () => {
 	return (
 		<div>
 			<div>
-				<div className="container">
+				<div className="container"  >
 					<div className="row">
 						<div className="col-6">
 							<div
