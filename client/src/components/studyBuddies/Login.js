@@ -52,6 +52,7 @@ const Login = () => {
 			<div>
 				<NavBar	/>
 			</div>
+
 			<div className="container">
 				<div className="row">
 					<div className="col-md-6 mt-5 mx-auto">
@@ -97,6 +98,8 @@ const Login = () => {
 				</div>
 			</div>
 		</div>
+
+
 	);
 };
 
