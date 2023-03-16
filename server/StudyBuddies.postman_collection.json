@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "9c692304-6f6a-4398-a9ec-e9b816f5719d",
+		"name": "StudyBuddies",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11898049"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"const d=pm.response.json();",
+							"pm.collectionVariables.set(\"email\",d.data.email)",
+							"pm.collectionVariables.set(\"password\",d.data.password)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\":\"{{$randomFirstName}}\",\n   \"email\":\"{{$randomExampleEmail}}\",\n   \"password\":\"123456\"\n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://starter-kit-uq32.onrender.com/api/register",
+					"protocol": "https",
+					"host": [
+						"starter-kit-uq32",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const d=pm.response.json();",
+							"pm.collectionVariables.set(\"tid\",d.id)",
+							"pm.collectionVariables.set(\"token\",d.token)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n   \"email\":\"{{email}}\",\n   \"password\":\"{{password}}\"\n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://starter-kit-uq32.onrender.com/api/login",
+					"protocol": "https",
+					"host": [
+						"starter-kit-uq32",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "availibities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://starter-kit-uq32.onrender.com/api/availabilities",
+					"protocol": "https",
+					"host": [
+						"starter-kit-uq32",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"availabilities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteTrainee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://starter-kit-uq32.onrender.com/api/trainee/:id",
+					"protocol": "https",
+					"host": [
+						"starter-kit-uq32",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"trainee",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "tid",
+			"value": ""
+		}
+	]
+}
