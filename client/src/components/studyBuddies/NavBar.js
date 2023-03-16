@@ -11,10 +11,8 @@ const NavBar = () => {
 						<Container>
 							<Navbar.Brand href="/home">
 								<Image
-									src="https://codeyourfuture.io/wp-content/uploads/2019/03/cyf_brand.png"
+									src={"/cyf_brand.png"}
 									alt="Code Your Future"
-									width="100"
-									height="50"
 								/>
 							</Navbar.Brand>
 							<Navbar.Toggle aria-controls="basic-navbar-nav" />

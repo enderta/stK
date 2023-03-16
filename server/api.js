@@ -53,6 +53,7 @@ router.post("/send", (req, res) => {
 		.messages()
 		.send(data, (error, body) => {
 			if (error) {
+				// eslint-disable-next-line no-console
 				console.log(error);
 				return res.status(500).json({
 					message: error.message,
@@ -103,7 +104,13 @@ router.post(
 				"INSERT INTO trainees (email, password, name) VALUES ($1, $2, $3)";
 			const values = [email, hashedPassword, name];
 			await db.query(query, values);
-			res.status(201).json({ msg: "User created" });
+			res.status(201).json({
+				message: "User created",
+				data: {
+					email,
+					password,
+				},
+			});
 		} catch (err) {
 			//eslint-disable-next-line
 			console.error(err);
