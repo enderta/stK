@@ -345,7 +345,7 @@ router.delete("/availability/:id", async (req, res) => {
 		}
 	});
 });
-router.delete("/api/trainee/:id", async (req, res) => {
+router.delete("/trainee/:id", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader(
 		"Access-Control-Allow-Methods",
