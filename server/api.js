@@ -345,5 +345,36 @@ router.delete("/availability/:id", async (req, res) => {
 		}
 	});
 });
+router.delete("/api/trainee/:id", async (req, res) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	const deleteQuery =
+		"DELETE FROM availability WHERE availability_date < CURRENT_DATE";
+	await db.query(deleteQuery);
+	jwt.verify(req.headers.authorization, secret, (error, decoded) => {
+		if (error) {
+			res.status(401).json({ message: "Unauthorized" });
+		} else {
+			const id = parseInt(req.params.id);
+			db.query(
+				"DELETE FROM trainees WHERE id = $1",
+				[id],
+				(error, results) => {
+					if (error) {
+						throw error;
+					}
+					res.status(200).json({ message: "Trainee deleted" });
+				}
+			);
+		}
+	});
+});
 
 export default router;
